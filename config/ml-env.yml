@@ -1,0 +1,22 @@
+# Conda environment created by steps/50-dev.sh when you choose the ml env.
+# PyTorch is installed afterwards with pip from PyTorch's CUDA wheel index
+# see TORCH_INDEXES in steps/50-dev.sh.
+#
+# Recreate it any time with:   conda env create -f ml-env.yml
+# Activate it with:            conda activate ml
+name: ml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - jupyterlab
+  - ipykernel
+  - tqdm
+  - pip:
+      - opencv-python

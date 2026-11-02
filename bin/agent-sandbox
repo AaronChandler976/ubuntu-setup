@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# agent-sandbox: run Claude Code with permission prompts OFF, but inside a Docker dev container,
+# so it can only touch this project folder and can only reach an allowlist of sites
+# (GitHub, npm, Anthropic API) - it never sees your SSH keys, browser logins or other files.
+#
+# Usage:  cd ~/SJSU/FALL_2026/CMPE_249/CMPE_249_HW1 && agent-sandbox ["task for claude"]
+#
+# First run in a project adds Anthropic's reference config to .devcontainer/ (commit it if you like).
+# You log in to Claude once inside the container; the login is kept in a Docker volume.
+set -euo pipefail
+dir=$(pwd)
+
+if [[ ! -f $dir/.devcontainer/devcontainer.json ]]; then
+    echo "No .devcontainer/ here - adding Anthropic's reference Claude Code sandbox..."
+    mkdir -p "$dir/.devcontainer"
+    base=https://raw.githubusercontent.com/anthropics/claude-code/main/.devcontainer
+    for f in devcontainer.json Dockerfile init-firewall.sh; do
+        curl -fsSL -o "$dir/.devcontainer/$f" "$base/$f"
+    done
+    chmod +x "$dir/.devcontainer/init-firewall.sh"
+fi
+
+if [[ -d $dir/.git ]] && [[ -n $(git -C "$dir" status --porcelain 2>/dev/null) ]]; then
+    echo "Tip: you have uncommitted changes. Commit first so you can undo anything the agent does."
+fi
+
+devcontainer up --workspace-folder "$dir"
+exec devcontainer exec --workspace-folder "$dir" claude --dangerously-skip-permissions "$@"

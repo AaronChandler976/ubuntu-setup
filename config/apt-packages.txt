@@ -1,0 +1,28 @@
+# Installed by the "system" step. One package per line; '#' starts a comment.
+build-essential
+cmake
+git
+curl
+wget
+ca-certificates
+gnupg
+software-properties-common
+openssh-client
+python3-pip
+python3-venv
+nodejs            # needed for the devcontainer CLI (agent sandboxes)
+npm
+jq
+tree
+unzip
+zip
+htop
+btop
+nvtop             # GPU monitor
+tmux
+ripgrep
+fd-find
+ntfs-3g           # read your Windows drive from Ubuntu
+vlc
+gnome-tweaks
+timeshift         # system snapshots = an undo button (set it up after install)

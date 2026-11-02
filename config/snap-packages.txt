@@ -1,0 +1,3 @@
+# Extra snaps, one per line with any flags, e.g.:
+#   spotify
+#   obsidian --classic
