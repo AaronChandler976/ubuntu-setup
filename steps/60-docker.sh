@@ -14,7 +14,7 @@ step_docker() {
     fi
     ok "Docker $(docker --version 2>/dev/null | awk '{print $3}' | tr -d ,)"
 
-    if lspci | grep -qi nvidia; then
+    if has_nvidia_gpu; then
         if ! dpkg -s nvidia-container-toolkit >/dev/null 2>&1; then
             info "Installing NVIDIA Container Toolkit..."
             curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \

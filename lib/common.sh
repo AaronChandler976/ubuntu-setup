@@ -11,6 +11,10 @@ warn() { printf '  \033[33m[!]\033[0m %s\n' "$*"; WARNINGS+=("$*"); }
 
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# True if any PCI device is made by NVIDIA (vendor ID 0x10de). Reads /sys directly,
+# so it works even when lspci (pciutils) isn't installed.
+has_nvidia_gpu() { grep -qx 0x10de /sys/bus/pci/devices/*/vendor 2>/dev/null; }
+
 # ask_yn "Question?" y|n  -> exit status 0 = yes. Returns the default when --unattended.
 ask_yn() {
     local q=$1 def=$2 ans hint='[y/N]'

@@ -4,7 +4,7 @@
 
 step_nvidia() {
     step "NVIDIA driver"
-    if ! lspci | grep -qi 'vga.*nvidia\|3d.*nvidia'; then
+    if ! has_nvidia_gpu; then
         info "No NVIDIA GPU found - skipping"
         return 0
     fi

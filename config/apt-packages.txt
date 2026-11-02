@@ -13,6 +13,7 @@ python3-venv
 nodejs            # needed for the devcontainer CLI (agent sandboxes)
 npm
 jq
+pciutils          # lspci
 tree
 unzip
 zip

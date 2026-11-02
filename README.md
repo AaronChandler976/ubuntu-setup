@@ -75,6 +75,7 @@ approve in the browser). After that it runs on its own, and at the end it offers
 | `--unattended` | No questions, defaults only |
 | `--skip a,b` / `--only a,b` | Skip / run only some steps |
 | `--git-name`, `--git-email` | Override git identity (default: GitHub username + private noreply email) |
+| `--sjsu-id ID` | Add `ssh hpc` / `ssh hpc3` shortcuts for the SJSU HPC |
 
 Safe to re-run. Logs: `~/.local/state/ubuntu-setup/`.
 
@@ -90,6 +91,7 @@ Safe to re-run. Logs: `~/.local/state/ubuntu-setup/`.
 | docker | `steps/60-docker.sh` | Docker + NVIDIA Container Toolkit (GPU in containers) |
 | ai | `steps/70-ai.sh` | Claude Code, devcontainer CLI, `agent-sandbox` |
 | robotics | `steps/80-robotics.sh` | ROS 2 + Gazebo + rosdep (only with `--robotics` / "yes") |
+| hpc | `steps/85-hpc.sh` | `ssh hpc` / `ssh hpc3` shortcuts (only if you give your SJSU ID) |
 | tweaks | `steps/90-tweaks.sh` | GRUB shows Windows and remembers your last choice, UTC clock, dark mode, no auto-suspend |
 | finish | `steps/99-finish.sh` | Manual checklist |
 
@@ -103,6 +105,26 @@ claude                                         # log in to Claude Code once
 ```
 
 Then open **Timeshift** and turn on daily snapshots, so you can roll back anything.
+
+---
+
+## SJSU VPN + HPC
+
+1. **VPN.** The HPC only accepts connections through the campus VPN. The free `openconnect` client
+   and Ubuntu's built-in VPN settings don't work, because SJSU's SSO always sends them to the
+   employee profile. Use the official client instead: open https://vpn.sjsu.edu in Chrome, pick
+   group **Student-SSO**, log in, and download the **Linux Cisco Secure Client** `.deb`. Then:
+   `sudo apt install ~/Downloads/cisco-secure-client*.deb`. Open *Cisco Secure Client*, connect
+   to `vpn.sjsu.edu`, and pick **Student-SSO**.
+2. **Key (once, VPN on):** `ssh-copy-id hpc`. After that `ssh hpc` and `ssh hpc3` don't need a password.
+3. **HPC3 first-time setup** (the login message explains it; run these *on coe-hpc1*, not on this PC):
+   make sure `~/.ssh/id_ed25519.pub` is in `~/.ssh/authorized_keys` and `~/.ssh/config` there uses
+   `IdentityFile ~/.ssh/id_ed25519`. HPC3's hostname is **g17**.
+4. **GPUs on HPC3:** queues are `gpuqs` (2 days), `gpuqm` (7 days), `gpuql` (14 days):
+   ```bash
+   srun -p gpuqs --gres=gpu:1 --pty /bin/bash   # interactive A100 40 GB; type exit when done
+   ```
+   For training, use `sbatch` job scripts so the GPU is released when the job ends.
 
 ---
 

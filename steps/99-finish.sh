@@ -10,7 +10,9 @@ step_finish() {
   [ ] Chrome: sign in + turn on sync; make it the default browser when it asks
   [ ] Claude Code: run 'claude' once and log in
   [ ] Timeshift: open it, pick RSYNC, schedule daily snapshots (your undo button before letting agents loose)
-  [ ] SJSU HPC: ssh-copy-id <your-id>@<hpc-login-host>   (uses ~/.ssh/id_ed25519)
+  [ ] SJSU VPN: in Chrome open https://vpn.sjsu.edu (group Student-SSO), install the Linux Cisco Secure Client .deb
+  [ ] SJSU HPC (VPN on): ssh-copy-id hpc, then 'ssh hpc' / 'ssh hpc3'
+      GPU session on HPC3: srun -p gpuqs --gres=gpu:1 --pty /bin/bash   (type exit when done)
   [ ] VS Code: Accounts icon > Backup and Sync Settings (sign in with GitHub)
   [ ] Sign in to Discord and Zoom
 TXT
